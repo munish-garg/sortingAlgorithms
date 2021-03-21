@@ -1,35 +1,42 @@
 #include<iostream>
 using namespace std;
-void quickSort(int a[], int s, int e){
-    //base case..
-    if(s>=e){
-        return ;
-    }
-    int idx = s-1, i = s;
-    //Since, we have not maintained any region of the smaller elements..
-    int pivot = a[e];
-    for(; i<e; i++){
-        if(a[i]<= pivot){
-            idx++;
-            swap(a[idx], a[i]);
+void helperFunction(int *a, int s, int e, int mid){
+    int i = s;
+    int j = mid+1;
+    int k = s;
+    int temp[100];
+    while(i<=mid && j<=e){
+        if(a[i]<=a[j]){
+            temp[k++] = a[i++];
+        }
+        else{
+            temp[k++] = a[j++];
         }
     }
-    //Now the idx points to the last element of the smaller region..
-    //So, after this element, we have to place the pivot element so that the entire region can be bifurcated..
-    swap(a[e], a[idx+1]);
-    idx++;
-    quickSort(a, s, idx-1);
-    quickSort(a, idx+1, e);
-    return;
+    while(i<=mid){
+        temp[k++] = a[i++];
+    }
+    while(j<=e){
+        temp[k++] = a[j++];
+    }
+    for(int ptr = s;ptr<=e;ptr++){
+        a[ptr] = temp[ptr];
+    }
+}
+void mergeSort(int *a, int s, int e){
+    if(s>=e) return ;
+    int mid = (s+e)/2;
+    mergeSort(a, s, mid);
+    mergeSort(a, mid+1, e);
+    helperFunction(a, s, e, mid);
+    return ;
 }
 int main(){
     int n; cin>>n;
     int a[n];
-    for(int i=0;i<n;i++){
-        cin>>a[i];
-    }
-    quickSort(a, 0, n-1);
-    for(int i = 0; i<n ; i++){
+    for(int i=0;i<n;i++) cin>>a[i];
+    mergeSort(a, 0, n-1);
+    for(int i = 0;i<n;i++){
         cout<<a[i]<<" ";
     }
     return 0;
