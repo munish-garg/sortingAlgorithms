@@ -9,7 +9,7 @@ void countingSort(int* a, int s, int e){
         }
     }
     int size = largest+1;
-    int freq[size] = {0};
+    int freq[size] = {0} ;
     for(int i=0;i<=e;i++){
         freq[a[i]]++;
     }
